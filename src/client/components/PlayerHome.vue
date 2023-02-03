@@ -28,6 +28,8 @@
 
       <div v-if="thisPlayer.tableau.length > 0">
           <div class="player_home_block">
+
+            <div class="game_state_main">
               <a name="board" class="player_home_anchor"></a>
               <board
                 :spaces="game.spaces"
@@ -46,47 +48,42 @@
                 id="shortkey-board"
               />
 
-              <turmoil v-if="game.turmoil" :turmoil="game.turmoil"/>
-
-              <MoonBoard v-if="game.gameOptions.moonExpansion" :model="game.moon" :tileView="tileView" id="shortkey-moonBoard"/>
-
-              <PlanetaryTracks v-if="game.gameOptions.pathfindersExpansion" :tracks="game.pathfinders" :gameOptions="game.gameOptions"/>
-
-              <div v-if="playerView.players.length > 1" class="player_home_block--milestones-and-awards">
-                  <Milestones :milestones_list="game.milestones" />
-                  <Awards :awards="game.awards" show-scores/>
+              <div class="player_home_block nofloat">
+                <log-panel
+                  :id="playerView.id"
+                  :players="playerView.players"
+                  :generation="game.generation"
+                  :lastSoloGeneration="game.lastSoloGeneration"
+                  :color="thisPlayer.color"
+                  :step="game.step"></log-panel>
               </div>
+            </div>
+
+            <turmoil v-if="game.turmoil" :turmoil="game.turmoil"/>
+
+            <MoonBoard v-if="game.gameOptions.moonExpansion" :model="game.moon" :tileView="tileView" id="shortkey-moonBoard"/>
+
+            <PlanetaryTracks v-if="game.gameOptions.pathfindersExpansion" :tracks="game.pathfinders" :gameOptions="game.gameOptions"/>
+
+            <div v-if="playerView.players.length > 1" class="player_home_block--milestones-and-awards">
+              <Milestones :milestones_list="game.milestones" />
+              <Awards :awards="game.awards" show-scores/>
+            </div>
           </div>
 
           <players-overview class="player_home_block player_home_block--players nofloat" :playerView="playerView" v-trim-whitespace id="shortkey-playersoverview"/>
 
-          <div class="player_home_block nofloat">
-              <log-panel
-                :id="playerView.id"
-                :players="playerView.players"
-                :generation="game.generation"
-                :lastSoloGeneration="game.lastSoloGeneration"
-                :color="thisPlayer.color"
-                :step="game.step"></log-panel>
-          </div>
-
-          <div class="player_home_block player_home_block--actions nofloat">
-              <a name="actions" class="player_home_anchor"></a>
-              <dynamic-title title="Actions" :color="thisPlayer.color"/>
-              <waiting-for v-if="game.phase !== 'end'" :players="playerView.players" :playerView="playerView" :settings="settings" :waitingfor="playerView.waitingFor"></waiting-for>
-          </div>
-
           <div class="player_home_block player_home_block--hand" v-if="playerView.draftedCards.length > 0">
-              <dynamic-title title="Drafted cards" :color="thisPlayer.color" />
-              <div v-for="card in playerView.draftedCards" :key="card.name" class="cardbox">
-                  <Card :card="card"/>
-              </div>
+            <dynamic-title title="Drafted cards" :color="thisPlayer.color" />
+            <div v-for="card in playerView.draftedCards" :key="card.name" class="cardbox">
+              <Card :card="card"/>
+            </div>
           </div>
 
           <a name="cards" class="player_home_anchor"></a>
           <div class="player_home_block player_home_block--hand" v-if="playerView.cardsInHand.length + playerView.preludeCardsInHand.length > 0" id="shortkey-hand">
-              <dynamic-title title="Cards In Hand" :color="thisPlayer.color" :withAdditional="true" :additional="(thisPlayer.cardsInHandNbr + playerView.preludeCardsInHand.length).toString()" />
-              <sortable-cards :playerId="playerView.id" :cards="playerView.preludeCardsInHand.concat(playerView.cardsInHand)" />
+            <dynamic-title title="Cards In Hand" :color="thisPlayer.color" :withAdditional="true" :additional="(thisPlayer.cardsInHandNbr + playerView.preludeCardsInHand.length).toString()" />
+            <sortable-cards :playerId="playerView.id" :cards="playerView.preludeCardsInHand.concat(playerView.cardsInHand)" />
           </div>
 
           <div class="player_home_block player_home_block--cards">
@@ -264,6 +261,12 @@
         <a :href="'/spectator?id=' +game.spectatorId" target="_blank" rel="noopener noreferrer" v-i18n>Spectator link</a>
       </div>
       <purge-warning :expectedPurgeTimeMs="playerView.game.expectedPurgeTimeMs"></purge-warning>
+
+      <div class="player_home_block player_home_block--actions actions-bar nofloat">
+        <a name="actions" class="player_home_anchor"></a>
+        <dynamic-title title="Actions" :color="thisPlayer.color"/>
+        <waiting-for v-if="game.phase !== 'end'" :players="playerView.players" :playerView="playerView" :settings="settings" :waitingfor="playerView.waitingFor"></waiting-for>
+      </div>
   </div>
 </template>
 
