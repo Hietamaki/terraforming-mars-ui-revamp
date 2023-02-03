@@ -948,13 +948,47 @@
 
 .actions-bar {
     position: sticky;
-    margin: -40px 0 0 auto;
-    padding: 8px 14px 8px 11px;
-    display: flex;
-    bottom: -20px;
-    z-index: 20;
-    background-color: #303030;
+    margin: -40px 0 0 -20px auto;
+    bottom: 0px;
+    z-index: 80;
     border-radius: 20px 20px 0 0;
+
+    .actions-bar-background {
+
+        margin: 0 0 -46px -20px;
+        background: #303030 !important;
+        padding: 8px 14px 0 11px;
+    }
+
+    .actions-bar-collapser {
+        background: #303030;
+        display: inline-block;
+        vertical-align: middle;
+        padding: 8px 14px 8px 11px;
+        height: 46px;
+        cursor: pointer;
+        margin: -32px 0 0 -20px;
+        border-radius: 0 20px 0 0;
+
+        img {
+            width: 20px;
+        }
+    }
+}
+
+.actions-bar-collapsed {
+    margin: -32px 0 0 -20px;
+    .player-info {
+        display: none;
+    }
+
+    .actions-bar-collapser {
+        margin: 11px 0 0 0;
+
+        img {
+            transform: scaleX(-1);
+        }
+    }
 }
 
 .game_state_main {
@@ -965,7 +999,7 @@
     position: sticky;
     margin: -40px 0 0 auto;
     margin-bottom: 15px;
-    z-index: 105;
+    z-index: 50;
     top: -12px;
     display: flex;
 

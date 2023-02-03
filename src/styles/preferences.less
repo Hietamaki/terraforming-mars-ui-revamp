@@ -3,7 +3,7 @@
     position: fixed;
     left: 0px;
     top: 5px;
-    z-index: 99;
+    z-index: 60;
     width: 60px;
     display: flex;
     flex-flow: column;
@@ -273,6 +273,7 @@
     max-height: calc(85vh);
     overflow-y: auto;
     white-space: nowrap;
+    z-index: 200;
 }
 
 .sidebar_item--is-active::after {
@@ -336,7 +337,7 @@
     }
     .filterDiv:hover {
         transform: scale(1.2);
-        z-index: 100;
+        z-index: 60;
     }
 
     .dragging .filterDiv:hover {
@@ -382,6 +383,7 @@
     background: #000000;
     max-height: calc(85vh);
     overflow-y: auto;
+    z-index:200;
 }
 
 .info_panel_actions {
