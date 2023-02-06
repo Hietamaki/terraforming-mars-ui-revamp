@@ -948,15 +948,18 @@
 
 .actions-bar {
     position: sticky;
-    margin: -40px 0 0 -20px auto;
-    bottom: 0px;
+    width:fit-content;
+    //margin: -40px 0 0 -20px auto;
+    margin: 0 0 0 -20px;
+    bottom: 0;
     z-index: 80;
-    border-radius: 20px 20px 0 0;
 
     .actions-bar-background {
 
-        margin: 0 0 -46px -20px;
-        background: #303030 !important;
+        //margin: 0 0 -46px -20px;
+        margin: 0 0 -20px 0;
+        background: #303030F0 !important;
+        border-radius: 0 20px 20px 0;
         padding: 8px 14px 0 11px;
     }
 
@@ -965,10 +968,9 @@
         display: inline-block;
         vertical-align: middle;
         padding: 8px 14px 8px 11px;
-        height: 46px;
         cursor: pointer;
-        margin: -32px 0 0 -20px;
-        border-radius: 0 20px 0 0;
+        //margin: -32px 0 0 -20px;
+        border-radius: 0 20px 20px 0;
 
         img {
             width: 20px;
@@ -999,7 +1001,7 @@
     position: sticky;
     margin: -40px 0 0 auto;
     margin-bottom: 15px;
-    z-index: 50;
+    z-index: 85;
     top: -12px;
     display: flex;
 
