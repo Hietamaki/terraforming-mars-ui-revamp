@@ -16,6 +16,7 @@ import {IMilestone} from './milestones/IMilestone';
 import {IProjectCard} from './cards/IProjectCard';
 import {LogMessageDataType} from '../common/logs/LogMessageDataType';
 import {OrOptions} from './inputs/OrOptions';
+import {SelectAction} from './inputs/SelectAction';
 import {PartyHooks} from './turmoil/parties/PartyHooks';
 import {PartyName} from '../common/turmoil/PartyName';
 import {Phase} from '../common/Phase';
@@ -1836,9 +1837,8 @@ export class Player {
 
   // Return possible mid-game actions like play a card and fund an award, but not play prelude card.
   public getActions() {
-    const action = new OrOptions();
-    action.title = this.actionsTakenThisRound === 0 ?
-      'Take your first action' : 'Take your next action';
+    const action = new SelectAction();
+    action.title = "Actions remaining: " + (2 - this.actionsTakenThisRound);
     action.buttonLabel = 'Take action';
 
     if (this.canAfford(MILESTONE_COST) && !this.game.allMilestonesClaimed()) {
