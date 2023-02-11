@@ -2,12 +2,12 @@
   <div id="player-home" :class="(game.turmoil ? 'with-turmoil': '')">
     <top-bar :playerView="playerView" />
 
-    <div v-if="game.phase === 'end'">
+      <div v-if="game.phase === 'end'">
         <div class="player_home_block">
-            <DynamicTitle title="This game is over!" :color="thisPlayer.color"/>
-            <a :href="'/the-end?id='+ playerView.id" v-i18n>Go to game results</a>
+          <DynamicTitle title="This game is over!" :color="thisPlayer.color"/>
+          <a :href="'the-end?id='+ playerView.id" v-i18n>Go to game results</a>
         </div>
-    </div>
+      </div>
 
     <sidebar v-trim-whitespace
       :acting_player="isPlayerActing(playerView)"
@@ -81,9 +81,9 @@
       </div>
 
       <a name="cards" class="player_home_anchor"></a>
-      <div class="player_home_block player_home_block--hand" v-if="playerView.cardsInHand.length + playerView.preludeCardsInHand.length > 0" id="shortkey-hand">
-        <dynamic-title title="Cards In Hand" :color="thisPlayer.color" :withAdditional="true" :additional="(thisPlayer.cardsInHandNbr + playerView.preludeCardsInHand.length).toString()" />
-        <sortable-cards :playerId="playerView.id" :cards="playerView.preludeCardsInHand.concat(playerView.cardsInHand)" />
+      <div class="player_home_block player_home_block--hand" v-if="cardsInHandCount > 0" id="shortkey-hand">
+        <dynamic-title title="Cards In Hand" :color="thisPlayer.color" :withAdditional="true" :additional="cardsInHandCount.toString()" />
+        <sortable-cards :playerId="playerView.id" :cards="playerView.preludeCardsInHand.concat(playerView.ceoCardsInHand).concat(playerView.cardsInHand)" />
       </div>
 
       <div class="player_home_block player_home_block--cards">
@@ -106,6 +106,9 @@
               <div class="text-overview" v-i18n>[ toggle cards filters ]</div>
           </div>
           <div v-for="card in getCardsByType(thisPlayer.tableau, [CardType.CORPORATION])" :key="card.name" class="cardbox">
+              <Card :card="card" :actionUsed="isCardActivated(card, thisPlayer)"/>
+          </div>
+          <div v-for="card in getCardsByType(thisPlayer.tableau, [CardType.CEO])" :key="card.name" class="cardbox">
               <Card :card="card" :actionUsed="isCardActivated(card, thisPlayer)"/>
           </div>
           <div v-show="isVisible('ACTIVE')" v-for="card in sortActiveCards(getCardsByType(thisPlayer.tableau, [CardType.ACTIVE]))" :key="card.name" class="cardbox">
@@ -150,6 +153,9 @@
           <div v-for="card in playerView.dealtPreludeCards" :key="card.name" class="cardbox">
             <Card :card="card"/>
           </div>
+          <div v-for="card in playerView.dealtCeoCards" :key="card.name" class="cardbox">
+            <Card :card="card"/>
+          </div>
           <div v-for="card in playerView.dealtProjectCards" :key="card.name" class="cardbox">
             <Card :card="card"/>
           </div>
@@ -162,6 +168,10 @@
         </div>
 
         <div v-for="card in playerView.dealtPreludeCards" :key="card.name" class="cardbox">
+          <Card :card="card"/>
+        </div>
+
+        <div v-for="card in playerView.dealtCeoCards" :key="card.name" class="cardbox">
           <Card :card="card"/>
         </div>
 
@@ -185,6 +195,11 @@
           <template v-if="game.gameOptions.preludeExtension">
             <div v-for="card in playerView.preludeCardsInHand" :key="card.name" class="cardbox">
               <Card :card="card"/>
+            </div>
+          </template>
+          <template v-if="game.gameOptions.ceoExtension">
+            <div v-for="card in playerView.ceoCardsInHand" :key="card.name" class="cardbox">
+            <Card :card="card"/>
             </div>
           </template>
         </div>
@@ -358,6 +373,10 @@ export default Vue.extend({
     },
     CardType(): typeof CardType {
       return CardType;
+    },
+    cardsInHandCount(): number {
+      const playerView = this.playerView;
+      return playerView.cardsInHand.length + playerView.preludeCardsInHand.length + playerView.ceoCardsInHand.length;
     },
   },
 
